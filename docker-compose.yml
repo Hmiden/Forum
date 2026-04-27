@@ -1,0 +1,61 @@
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - micro-network
+
+  forum-service:
+    build: ./backend/microservice2
+    container_name: forum-service
+    ports:
+      - "8082:8082"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/foruml?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+    depends_on:
+      - mysql
+    networks:
+      - micro-network
+
+  resource-service:
+    build: ./backend/microservice1
+    container_name: resource-service
+    ports:
+      - "8078:8078"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3306/ressource?createDatabaseIfNotExist=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=
+      - FORUM_SERVICE_URL=http://forum-service:8082
+    depends_on:
+      - mysql
+      - forum-service
+    networks:
+      - micro-network
+
+  frontend:
+    build: ./Frontend
+    container_name: frontend-app
+    ports:
+      - "4200:80"
+    depends_on:
+      - resource-service
+      - forum-service
+    networks:
+      - micro-network
+
+networks:
+  micro-network:
+    driver: bridge
+
+volumes:
+  mysql_data:
