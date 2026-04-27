@@ -1,0 +1,27 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+.settings/
+.classpath
+.project
+
+# Build
+**/target/
+**/dist/
+**/node_modules/
+**/out/
+**/bin/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Misc
+.mvn/wrapper/*.jar
+.mvn/
+mvnw
+mvnw.cmd

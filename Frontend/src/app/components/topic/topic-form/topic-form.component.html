@@ -1,0 +1,66 @@
+<div class="card mb-4 p-4 shadow-sm rounded">
+
+  <!-- Form title -->
+  <h5 class="text-primary fw-semibold mb-4">{{ titleForm }}</h5>
+
+  <!-- Title input -->
+  <div class="mb-3">
+    <label class="form-label fw-medium">Title</label>
+    <input type="text"
+           class="form-control form-control-lg rounded"
+           [(ngModel)]="topic.title"
+           name="title"
+           #titleModel="ngModel"
+           placeholder="Enter title"
+           required minlength="3">
+    <div class="text-danger mt-1" *ngIf="titleModel.invalid && titleModel.touched">
+      <div *ngIf="titleModel.errors?.['required']">Title is required.</div>
+      <div *ngIf="titleModel.errors?.['minlength']">Title must be at least 3 characters.</div>
+    </div>
+  </div>
+
+  <!-- Content textarea -->
+  <div class="mb-3">
+    <label class="form-label fw-medium">Content</label>
+    <textarea class="form-control form-control-lg rounded"
+              [(ngModel)]="topic.content"
+              name="content"
+              #contentModel="ngModel"
+              placeholder="Enter content" rows="4"
+              required minlength="3"></textarea>
+    <div class="text-danger mt-1" *ngIf="contentModel.invalid && contentModel.touched">
+      <div *ngIf="contentModel.errors?.['required']">Content is required.</div>
+      <div *ngIf="contentModel.errors?.['minlength']">Content must be at least 3 characters.</div>
+    </div>
+  </div>
+
+  <!-- ✅ Email input -->
+  <div class="mb-3">
+    <label class="form-label fw-medium">
+      Your Email
+      <small class="text-muted fw-normal"> — you will be notified when someone replies</small>
+    </label>
+    <input type="email"
+           class="form-control form-control-lg rounded"
+           [(ngModel)]="topic.authorEmail"
+           name="authorEmail"
+           #emailModel="ngModel"
+           placeholder="Enter your email"
+           required email>
+    <div class="text-danger mt-1" *ngIf="emailModel.invalid && emailModel.touched">
+      <div *ngIf="emailModel.errors?.['required']">Email is required.</div>
+      <div *ngIf="emailModel.errors?.['email']">Please enter a valid email address.</div>
+    </div>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="d-flex">
+    <button class="btn btn-success me-2"
+            (click)="onSave()"
+            [disabled]="titleModel.invalid || contentModel.invalid || emailModel.invalid">
+      {{ topic.id ? 'Update' : 'Create' }}
+    </button>
+    <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+  </div>
+
+</div>

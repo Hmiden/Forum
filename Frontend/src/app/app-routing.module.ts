@@ -1,0 +1,24 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { CategoryListComponent } from './components/category/category-list/category-list.component';
+import { TopicListComponent } from './components/topic/topic-list/topic-list.component';
+import { ReplyListComponent } from './components/reply/reply-list/reply-list.component';
+import { ResourceListComponent } from './components/resource-list/resource-list.component';
+
+const routes: Routes = [
+   { path: '', redirectTo: '/categories', pathMatch: 'full' },
+  { path: 'categories', component: CategoryListComponent },
+  { path: 'categories/:categoryId/topics', component: TopicListComponent },
+  
+  { path: 'topics/:topicId/replies', component: ReplyListComponent },
+  { path: 'resources', component: ResourceListComponent },
+  { path: '**', redirectTo: '/categories' },
+  
+  
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }

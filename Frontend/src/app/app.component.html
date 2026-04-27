@@ -1,0 +1,130 @@
+<!-- ═══ SIDEBAR ═══ -->
+<aside class="sidebar">
+    <div class="sidebar-logo">
+      <div class="logo-icon">🎓</div>
+      <div>
+        <div class="logo-text">Fluency</div>
+        <div class="logo-sub">PiDev Platform</div>
+      </div>
+    </div>
+  
+    <div class="sidebar-body">
+  
+      <div class="sidebar-section-label">Main</div>
+  
+      <a class="sidebar-item" routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact:true}">
+        <div class="item-icon"><i class="fas fa-home"></i></div>
+        Dashboard
+      </a>
+  
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">Management</div>
+  
+      <a class="sidebar-item" href="#">
+        <div class="item-icon"><i class="fas fa-book-open"></i></div>
+        Courses
+        <span class="item-badge badge-blue">12</span>
+      </a>
+  
+      <a class="sidebar-item" href="#">
+        <div class="item-icon"><i class="fas fa-user-graduate"></i></div>
+        Candidature
+        <span class="item-badge badge-green">3</span>
+      </a>
+  
+      <a class="sidebar-item" href="#">
+        <div class="item-icon"><i class="fas fa-clipboard-check"></i></div>
+        Evaluation
+      </a>
+  
+      <a class="sidebar-item" href="#">
+        <div class="item-icon"><i class="fas fa-credit-card"></i></div>
+        Payment
+        <span class="item-badge badge-purple">!</span>
+      </a>
+  
+      <a class="sidebar-item" href="#">
+        <div class="item-icon"><i class="fas fa-users"></i></div>
+        Association Management
+      </a>
+  
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">Community</div>
+  
+      <a class="sidebar-item" routerLink="/categories" routerLinkActive="active">
+        <div class="item-icon"><i class="fas fa-comments"></i></div>
+        Forum
+        <span class="item-badge badge-blue">5</span>
+      </a>
+  
+      <a class="sidebar-item" routerLink="/resources" routerLinkActive="active">
+        <div class="item-icon"><i class="fas fa-folder-open"></i></div>
+        Resources
+      </a>
+  
+      <div class="sidebar-divider"></div>
+      <div class="sidebar-section-label">System</div>
+  
+      <a class="sidebar-item" href="#">
+        <div class="item-icon"><i class="fas fa-cog"></i></div>
+        Settings
+      </a>
+  
+      <a class="sidebar-item" href="#">
+        <div class="item-icon"><i class="fas fa-question-circle"></i></div>
+        Help
+      </a>
+  
+    </div>
+  
+    <div class="sidebar-footer">
+      <div class="user-info">
+        <div class="user-avatar-small">NF</div>
+        <div class="user-details">
+          <div class="user-name">Nidhal F.</div>
+          <div class="user-role">Administrator</div>
+        </div>
+        <i class="fas fa-ellipsis-v" style="color: #8899aa; font-size: 12px;"></i>
+      </div>
+    </div>
+  </aside>
+  
+  <!-- ═══ NAVBAR ═══ -->
+  <nav class="navbar">
+    <div class="navbar-left">
+      <div class="breadcrumb">
+        <i class="fas fa-home"></i>
+        <i class="fas fa-chevron-right"></i>
+        <span>Dashboard</span>
+      </div>
+      <a class="nav-forum-link" routerLink="/categories">
+        <i class="fas fa-comments"></i>
+        Forum
+      </a>
+      <a class="nav-forum-link" routerLink="/resources">
+        <i class="fas fa-folder-open"></i>
+        Resources
+      </a>
+    </div>
+  
+    <div class="navbar-right">
+      <div class="nav-icon-btn">
+        <i class="fas fa-search"></i>
+      </div>
+      <div class="nav-icon-btn">
+        <i class="fas fa-bell"></i>
+        <div class="notif-badge">3</div>
+      </div>
+      <div class="nav-icon-btn">
+        <i class="fas fa-envelope"></i>
+      </div>
+      <div class="nav-avatar">NF</div>
+    </div>
+  </nav>
+  
+  <!-- ═══ PAGE CONTENT ═══ -->
+  <main class="main">
+    <div class="content">
+      <router-outlet></router-outlet>
+    </div>
+  </main>

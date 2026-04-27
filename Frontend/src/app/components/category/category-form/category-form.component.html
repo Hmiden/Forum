@@ -1,0 +1,38 @@
+<div class="card mb-4 p-4 shadow-sm rounded">
+  <!-- Form title -->
+  <h5 class="text-primary fw-semibold mb-4">{{ title }}</h5>
+
+  <!-- Category Name input -->
+  <div class="mb-3">
+    <label class="form-label fw-medium">Category Name</label>
+    <input type="text" 
+           class="form-control form-control-lg rounded" 
+           [(ngModel)]="category.name" 
+           name="categoryName"
+           #nameModel="ngModel"
+           placeholder="Enter name" 
+           required minlength="3">
+    <div class="text-danger mt-1" *ngIf="nameModel.invalid && nameModel.touched">
+      <div *ngIf="nameModel.errors?.['required']">Name is required.</div>
+      <div *ngIf="nameModel.errors?.['minlength']">Name must be at least 3 characters.</div>
+    </div>
+  </div>
+
+  <!-- Description textarea -->
+  <div class="mb-3">
+    <label class="form-label fw-medium">Description</label>
+    <textarea class="form-control form-control-lg rounded" 
+              [(ngModel)]="category.description" 
+              name="categoryDescription"
+              #descModel="ngModel"
+              placeholder="Enter description" rows="4"></textarea>
+  </div>
+
+  <!-- Action buttons -->
+  <div class="d-flex">
+    <button class="btn btn-success me-2" (click)="onSave()" [disabled]="nameModel.invalid">
+      {{ category.id ? 'Update' : 'Create' }}
+    </button>
+    <button class="btn btn-secondary" (click)="onCancel()">Cancel</button>
+  </div>
+</div>

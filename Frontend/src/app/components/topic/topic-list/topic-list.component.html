@@ -1,0 +1,101 @@
+<div class="container mt-5">
+
+  <!-- Back button -->
+  <div class="mb-3">
+    <button class="btn btn-outline-secondary btn-sm" (click)="goBack()">
+      <i class="fas fa-arrow-left me-1"></i> Back to Categories
+    </button>
+  </div>
+
+  <!-- Header -->
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="text-primary fw-bold">Topics</h2>
+    <button class="btn btn-primary" (click)="showForm = !showForm">
+      {{ showForm ? 'Close Form' : 'Add Topic' }}
+    </button>
+  </div>
+
+  <!-- Topic form -->
+  <app-topic-form *ngIf="showForm"
+    [topic]="currentTopic"
+    [titleForm]="currentTopic.id ? 'Edit Topic' : 'Add Topic'"
+    (save)="handleSave($any($event))"
+    (cancel)="cancelForm()">
+  </app-topic-form>
+
+  <!-- ch bar -->
+  <div class="card p-3 mb-4 shadow-sm">
+    <div class="row g-2">
+      <div class="col-md-6">
+        <input type="text"
+               class="form-control"
+               placeholder="🔍 Search by title..."
+               [(ngModel)]="searchTitle"
+               (input)="onSearch()">
+      </div>
+      <div class="col-md-4">
+        <input type="date"
+               class="form-control"
+               [(ngModel)]="searchDateFrom"
+               (change)="onSearch()">
+      </div>
+      <div class="col-md-2">
+        <button class="btn btn-outline-secondary w-100"
+                (click)="searchTitle=''; searchDateFrom=''; loadTopics()">
+          Reset
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Topics list -->
+  <ul class="list-group shadow-sm">
+    <li class="list-group-item d-flex justify-content-between align-items-center mb-2 rounded"
+        *ngFor="let topic of topics">
+      <div class="me-3">
+        <h5 class="mb-1 text-truncate" style="max-width: 300px;">{{ topic.title }}</h5>
+        <small class="text-muted d-block text-truncate" style="max-width: 300px;">
+          {{ topic.content }}
+        </small>
+        <small class="text-muted d-block">
+          <i class="fas fa-envelope me-1"></i>{{ topic.authorEmail }}
+        </small>
+        <!-- ✅ Reply count -->
+        <small class="text-muted">
+          <i class="fas fa-reply me-1"></i>
+          <span class="fw-semibold">Replies : {{ topic.replyCount ?? 0 }}</span>
+        </small>
+      </div>
+      <div class="d-flex">
+        <button class="btn btn-success btn-sm me-2" (click)="goToReplies(topic)">Reply</button>
+        <button class="btn btn-warning btn-sm me-2" (click)="editTopic(topic)">Edit</button>
+        <button class="btn btn-danger btn-sm" (click)="deleteTopic(topic.id!)">Delete</button>
+      </div>
+    </li>
+
+    <!-- No topics message -->
+    <li class="list-group-item text-center text-muted" *ngIf="topics.length === 0">
+      <i class="fas fa-search me-2"></i> No topics found.
+    </li>
+  </ul>
+
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteTopicModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content shadow-sm rounded">
+      <div class="modal-header border-0">
+        <h5 class="modal-title text-danger">Confirm Delete</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <p>Are you sure you want to delete this topic?</p>
+      </div>
+      <div class="modal-footer border-0">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
