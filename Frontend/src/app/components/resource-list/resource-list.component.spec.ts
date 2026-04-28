@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { FormsModule } from '@angular/forms';
 import { ResourceListComponent } from './resource-list.component';
 
 describe('ResourceListComponent', () => {
@@ -8,7 +9,8 @@ describe('ResourceListComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ResourceListComponent]
+      declarations: [ResourceListComponent],
+      imports: [HttpClientTestingModule, FormsModule]
     });
     fixture = TestBed.createComponent(ResourceListComponent);
     component = fixture.componentInstance;
