@@ -29,6 +29,12 @@ public class TopicController {
         return serviceTopic.getAll();
     }
 
+    @GetMapping("/{id}")
+    public TopicDTO getByIdDTO(@PathVariable Long id) {
+        Topic topic = serviceTopic.getById(id);
+        return com.Forum.Forum.Services.TopicMapper.toDTO(topic);
+    }
+
     @GetMapping("/category/{categoryId}")
     public List<Topic> getByCategory(@PathVariable Long categoryId) {
         return serviceTopic.getByCategory(categoryId);
