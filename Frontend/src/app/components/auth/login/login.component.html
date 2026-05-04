@@ -43,13 +43,7 @@
                     <div *ngIf="rf['password'].errors['required']">Password is required</div>
                 </div>
             </div>
-            <div class="form-group">
-                <label>Account Role</label>
-                <select formControlName="role" class="form-control">
-                    <option value="USER">Standard User</option>
-                    <option value="ADMIN">System Administrator</option>
-                </select>
-            </div>
+
             <button [disabled]="loading || registerForm.invalid" class="btn-primary">
                 <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
                 Create Account

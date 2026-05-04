@@ -35,8 +35,7 @@ export class LoginComponent implements OnInit {
 
     this.registerForm = this.formBuilder.group({
       username: ['', Validators.required],
-      password: ['', Validators.required],
-      role: ['USER', Validators.required]
+      password: ['', Validators.required]
     });
   }
 
@@ -82,7 +81,7 @@ export class LoginComponent implements OnInit {
     this.authService.register(
       this.rf['username'].value, 
       this.rf['password'].value,
-      this.rf['role'].value
+      'USER'
     )
       .subscribe({
         next: (response) => {

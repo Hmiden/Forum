@@ -23,6 +23,7 @@ public class AuthController {
     public org.springframework.http.ResponseEntity<?> register(@RequestBody User user) {
         try {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setRole(Role.USER);
             userRepository.save(user);
             return org.springframework.http.ResponseEntity.ok("User registered successfully");
         } catch (Exception e) {
