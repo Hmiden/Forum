@@ -1,5 +1,5 @@
 <!-- ═══ SIDEBAR ═══ -->
-<aside class="sidebar">
+<aside class="sidebar" *ngIf="!isLoginPage()">
     <div class="sidebar-logo">
       <div class="logo-icon">🎓</div>
       <div>
@@ -65,6 +65,11 @@
       <div class="sidebar-divider"></div>
       <div class="sidebar-section-label">System</div>
   
+      <a class="sidebar-item" *ngIf="authService.isAdmin()" routerLink="/admin" routerLinkActive="active">
+        <div class="item-icon"><i class="fas fa-shield-alt"></i></div>
+        Admin Dashboard
+      </a>
+  
       <a class="sidebar-item" href="#">
         <div class="item-icon"><i class="fas fa-cog"></i></div>
         Settings
@@ -78,19 +83,27 @@
     </div>
   
     <div class="sidebar-footer">
-      <div class="user-info">
-        <div class="user-avatar-small">NF</div>
+      <div class="user-info" *ngIf="authService.isLoggedIn()">
+        <div class="user-avatar-small">U</div>
         <div class="user-details">
-          <div class="user-name">Nidhal F.</div>
-          <div class="user-role">Administrator</div>
+          <div class="user-name">{{ authService.getUsername() }}</div>
+          <div class="user-role">{{ authService.isAdmin() ? 'Administrator' : 'Student' }}</div>
         </div>
-        <i class="fas fa-ellipsis-v" style="color: #8899aa; font-size: 12px;"></i>
+        <button class="signout-btn" (click)="logout()" title="Sign Out">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+      <div class="user-info" *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/login" class="sidebar-item" style="width: 100%; border: none; background: transparent; padding: 0;">
+          <div class="item-icon"><i class="fas fa-user"></i></div>
+          Sign In
+        </a>
       </div>
     </div>
   </aside>
   
   <!-- ═══ NAVBAR ═══ -->
-  <nav class="navbar">
+  <nav class="navbar" *ngIf="!isLoginPage()">
     <div class="navbar-left">
       <div class="breadcrumb">
         <i class="fas fa-home"></i>
@@ -111,6 +124,15 @@
       <div class="nav-icon-btn">
         <i class="fas fa-search"></i>
       </div>
+      
+      <!-- Login / Logout -->
+      <a *ngIf="!authService.isLoggedIn()" routerLink="/login" class="nav-forum-link">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </a>
+      <a *ngIf="authService.isLoggedIn()" (click)="logout()" class="nav-forum-link" style="cursor: pointer;">
+        <i class="fas fa-sign-out-alt"></i> Logout
+      </a>
+
       <div class="nav-icon-btn">
         <i class="fas fa-bell"></i>
         <div class="notif-badge">3</div>
@@ -118,12 +140,12 @@
       <div class="nav-icon-btn">
         <i class="fas fa-envelope"></i>
       </div>
-      <div class="nav-avatar">NF</div>
+      <div class="nav-avatar" *ngIf="authService.isLoggedIn()">{{ authService.getUsername().substring(0, 2).toUpperCase() }}</div>
     </div>
   </nav>
   
   <!-- ═══ PAGE CONTENT ═══ -->
-  <main class="main">
+  <main class="main" [ngClass]="{'full-width': isLoginPage()}">
     <div class="content">
       <router-outlet></router-outlet>
     </div>

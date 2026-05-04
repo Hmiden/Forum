@@ -321,12 +321,40 @@ body {
   color: var(--text-muted);
 }
 
+.signout-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 14px;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.signout-btn:hover {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+}
+
 /* ─── MAIN ─── */
 .main {
   margin-left: var(--sidebar-w);
   padding-top: var(--nav-h);
   min-height: 100vh;
   background: var(--bg-dark);
+}
+
+.main.full-width {
+  margin-left: 0;
+  padding-top: 0;
+}
+
+.main.full-width .content {
+  padding: 0;
 }
 
 .content {

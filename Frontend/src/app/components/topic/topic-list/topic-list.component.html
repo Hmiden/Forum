@@ -68,8 +68,8 @@
       </div>
       <div class="d-flex">
         <button class="btn btn-success btn-sm me-2" (click)="goToReplies(topic)">Reply</button>
-        <button class="btn btn-warning btn-sm me-2" (click)="editTopic(topic)">Edit</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteTopic(topic.id!)">Delete</button>
+        <button *ngIf="authService.isAdmin()" class="btn btn-warning btn-sm me-2" (click)="editTopic(topic)">Edit</button>
+        <button *ngIf="authService.isAdmin()" class="btn btn-danger btn-sm" (click)="deleteTopic(topic.id!)">Delete</button>
       </div>
     </li>
 

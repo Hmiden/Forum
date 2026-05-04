@@ -8,7 +8,7 @@ import { Topic } from '../models/topic';
 })
 export class TopicService {
 
- private baseUrl = 'http://localhost:8082/topic';
+ private baseUrl = 'http://localhost:8080/topic';
 
   constructor(private http: HttpClient) { }
 

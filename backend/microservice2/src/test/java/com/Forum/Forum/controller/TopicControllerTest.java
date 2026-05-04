@@ -8,7 +8,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import com.Forum.Forum.security.JwtFilter;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -21,7 +24,8 @@ import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(TopicController.class)
+@WebMvcTest(value = TopicController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
+@AutoConfigureMockMvc(addFilters = false)
 public class TopicControllerTest {
 
     @Autowired
@@ -29,6 +33,9 @@ public class TopicControllerTest {
 
     @MockBean
     private IServiceTopic serviceTopic;
+
+    @MockBean
+    private JwtFilter jwtFilter;
 
     private Topic topic;
     private TopicDTO topicDTO;

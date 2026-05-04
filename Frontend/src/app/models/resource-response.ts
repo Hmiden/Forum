@@ -9,5 +9,6 @@ export interface ResourceResponse {
     topicId: number;
     topicName: string; // 🔥 important
     type: ResourceType; // ✅ FIX
-
+    aiSummary?: string;
+    status?: string;
   }

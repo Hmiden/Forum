@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ResourceService } from 'src/app/services/resource.service';
 import { TopicService } from 'src/app/services/topic.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 import { ResourceResponse } from 'src/app/models/resource-response';
 import { Resource } from 'src/app/models/resource';
@@ -52,7 +53,8 @@ export class ResourceListComponent implements OnInit {
 
   constructor(
     private resourceService: ResourceService,
-    private topicService: TopicService
+    private topicService: TopicService,
+    public authService: AuthService
   ) {}
 
   ngOnInit(): void {
@@ -172,7 +174,10 @@ export class ResourceListComponent implements OnInit {
 
       this.showSuccess('Resource deleted.');
     },
-    error: () => this.showError('Delete failed.')
+    error: (err) => {
+        const msg = err.error?.message || err.error || 'Delete failed.';
+        this.showError(msg);
+      }
   });
 }
 

@@ -13,19 +13,23 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class ImplServiceReply implements IServiceReply {
-    private  IReplyRepository replyRepository;
+    private IReplyRepository replyRepository;
     private ITopicRepository topicRepository;
+    private BadwordService badwordService;
+
     @Override
     public ReplyDTO create(Reply reply, Long topicId) {
         Topic topic = topicRepository.findById(topicId)
                 .orElseThrow(() -> new RuntimeException("Topic not found"));
+
+        // Censor badwords
+        reply.setContent(badwordService.censorText(reply.getContent()));
 
         reply.setTopic(topic);
         Reply savedReply = replyRepository.save(reply);
 
         return ReplyMapper.toDTO(savedReply);
     }
-
 
     @Override
     public List<Reply> getByTopic(Long topicId) {
@@ -35,7 +39,10 @@ public class ImplServiceReply implements IServiceReply {
     @Override
     public Reply update(Long id, Reply reply) {
         Reply existing = replyRepository.findById(id).orElseThrow();
-        existing.setContent(reply.getContent());
+        
+        // Censor badwords
+        existing.setContent(badwordService.censorText(reply.getContent()));
+        
         return replyRepository.save(existing);
     }
 

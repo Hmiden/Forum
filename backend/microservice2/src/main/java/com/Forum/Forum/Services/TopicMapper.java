@@ -15,7 +15,7 @@ public class TopicMapper {
             dto.setCategoryId(topic.getCategory().getId());
         }
         dto.setReplyCount(topic.getReplyCount());
-        dto.setAuthorEmail("user@example.com"); // Placeholder
+        dto.setAuthorEmail(topic.getAuthorEmail());
         return dto;
     }
 }

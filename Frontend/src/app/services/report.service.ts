@@ -8,7 +8,7 @@ import { Report } from '../models/report';
 })
 export class ReportService {
 
-  private baseUrl = 'http://localhost:8082/report';
+  private baseUrl = 'http://localhost:8080/report';
 
   constructor(private http: HttpClient) {}
 
@@ -17,7 +17,7 @@ export class ReportService {
   }
 
   getAll(): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl);
+    return this.http.get<any[]>(`${this.baseUrl}/admin/all`);
   }
 
   getPending(): Observable<any[]> {
@@ -25,6 +25,7 @@ export class ReportService {
   }
 
   updateStatus(id: number, status: string): Observable<any> {
-    return this.http.put(`${this.baseUrl}/${id}/status`, { status });
+    // Note: status is passed as a query param in the backend: @RequestParam ReportStatus status
+    return this.http.patch(`${this.baseUrl}/admin/${id}/status?status=${status}`, {});
   }
 }

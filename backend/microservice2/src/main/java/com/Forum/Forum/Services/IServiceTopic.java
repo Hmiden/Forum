@@ -1,8 +1,5 @@
 package com.Forum.Forum.Services;
 
-
-
-
 import com.Forum.Forum.entity.Topic;
 import com.Forum.Forum.entity.TopicDTO;
 
@@ -16,4 +13,6 @@ public interface IServiceTopic {
     Topic update(Long id, Topic topic);
     void delete(Long id);
     List<TopicDTO> getAllDTO();
+    List<Topic> getTrendingTopics(int days);
+    List<Topic> searchByTitle(String title);
 }

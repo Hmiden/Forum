@@ -27,17 +27,28 @@ public class Resource {
     @Enumerated(EnumType.STRING)
     private ResourceType type;
 
-    private Long topicId;   // relation avec Forum Service (MS1)
+    private Long topicId;
 
     private Long userId;
 
     private LocalDateTime createdAt;
 
+    private LocalDateTime updatedAt;
+    
+    @Column(columnDefinition = "TEXT")
+    private String aiSummary;
+
+    // ===== Advanced Business Logic: Approval workflow =====
+    @Enumerated(EnumType.STRING)
+    private ResourceStatus status;
+
     @PrePersist
     public void prePersist() {
         this.createdAt = LocalDateTime.now();
+        if (this.status == null) {
+            this.status = ResourceStatus.PENDING;
+        }
     }
-    private LocalDateTime updatedAt;
 
     @PreUpdate
     public void preUpdate() {

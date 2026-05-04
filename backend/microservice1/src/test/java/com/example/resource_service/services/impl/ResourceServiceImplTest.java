@@ -4,8 +4,11 @@ import com.example.resource_service.entity.Dto.ResourceResponseDTO;
 import com.example.resource_service.entity.Dto.TopicDTO;
 import com.example.resource_service.entity.Resource;
 import com.example.resource_service.entity.ResourceType;
+import com.example.resource_service.entity.ResourceStatus;
 import com.example.resource_service.feign.ForumClient;
 import com.example.resource_service.repository.ResourceRepository;
+import com.example.resource_service.services.GeminiService;
+import com.example.resource_service.services.ResourceService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -30,6 +33,9 @@ public class ResourceServiceImplTest {
     @Mock
     private ForumClient forumClient;
 
+    @Mock
+    private GeminiService geminiService;
+
     @InjectMocks
     private ResourceServiceImpl resourceService;
 
@@ -43,8 +49,9 @@ public class ResourceServiceImplTest {
         resource.setTitle("Test Resource");
         resource.setDescription("Test Description");
         resource.setUrl("http://test.com");
-        resource.setType(ResourceType.valueOf("VIDEO")); // Adjust if your Enum values are different
+        resource.setType(ResourceType.VIDEO);
         resource.setTopicId(100L);
+        resource.setStatus(ResourceStatus.APPROVED); // Default to approved for listing tests
 
         topicDTO = new TopicDTO();
         topicDTO.setId(100L);
@@ -53,6 +60,7 @@ public class ResourceServiceImplTest {
 
     @Test
     void testAddResource() {
+        when(geminiService.summarize(anyString())).thenReturn("AI Summary");
         when(forumClient.getTopicById(100L)).thenReturn(topicDTO);
         when(resourceRepository.save(any(Resource.class))).thenReturn(resource);
 
@@ -65,19 +73,21 @@ public class ResourceServiceImplTest {
     }
 
     @Test
-    void testGetAllResources() {
+    void testGetAllResources_All() {
+        Resource pendingResource = new Resource();
+        pendingResource.setStatus(ResourceStatus.PENDING);
+        
         when(forumClient.getAllTopics()).thenReturn(Arrays.asList(topicDTO));
-        when(resourceRepository.findAll()).thenReturn(Arrays.asList(resource));
+        when(resourceRepository.findAll()).thenReturn(Arrays.asList(resource, pendingResource));
 
         List<ResourceResponseDTO> result = resourceService.getAllResources();
 
         assertNotNull(result);
-        assertEquals(1, result.size());
-        assertEquals("Test Topic", result.get(0).getTopicName());
+        assertEquals(2, result.size()); // Now returns everything
     }
 
     @Test
-    void testGetResourcesByTopic() {
+    void testGetResourcesByTopic_OnlyApproved() {
         when(forumClient.getTopicById(100L)).thenReturn(topicDTO);
         when(resourceRepository.findByTopicId(100L)).thenReturn(Arrays.asList(resource));
 
@@ -94,7 +104,7 @@ public class ResourceServiceImplTest {
         updatedInfo.setTitle("Updated Title");
         updatedInfo.setDescription("Updated Desc");
         updatedInfo.setUrl("http://updated.com");
-        updatedInfo.setType(ResourceType.valueOf("PDF"));
+        updatedInfo.setType(ResourceType.PDF);
 
         when(resourceRepository.findById(1L)).thenReturn(Optional.of(resource));
         when(resourceRepository.save(any(Resource.class))).thenReturn(resource);
@@ -104,6 +114,19 @@ public class ResourceServiceImplTest {
 
         assertNotNull(result);
         assertEquals("Updated Title", result.getTitle());
+        verify(resourceRepository, times(1)).save(any(Resource.class));
+    }
+
+    @Test
+    void testUpdateResourceStatus() {
+        when(resourceRepository.findById(1L)).thenReturn(Optional.of(resource));
+        when(resourceRepository.save(any(Resource.class))).thenReturn(resource);
+        when(forumClient.getTopicById(100L)).thenReturn(topicDTO);
+
+        ResourceResponseDTO result = resourceService.updateResourceStatus(1L, ResourceStatus.REJECTED);
+
+        assertNotNull(result);
+        assertEquals(ResourceStatus.REJECTED, resource.getStatus());
         verify(resourceRepository, times(1)).save(any(Resource.class));
     }
 

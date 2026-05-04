@@ -10,7 +10,7 @@ import { ReplyDto } from '../models/reply-dto';
 })
 export class ReplyService {
 
-  private baseUrl = 'http://localhost:8082/reply';
+  private baseUrl = 'http://localhost:8080/reply';
 
   constructor(private http: HttpClient) { }
 getByTopic(topicId: number): Observable<ReplyDto[]> {

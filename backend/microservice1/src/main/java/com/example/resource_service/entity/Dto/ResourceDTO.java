@@ -13,6 +13,6 @@ public class ResourceDTO {
     private String url;
     private String type;
     private Long topicId;
-    private String topicName; // 🔥 IMPORTANT
-
+    private String topicName;
+    private String aiSummary;
 }

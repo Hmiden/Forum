@@ -20,6 +20,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     private final ResourceRepository resourceRepository;
     private final ForumClient forumClient;
+    private final com.example.resource_service.services.GeminiService geminiService;
 
     // ================= CREATE =================
     @Override
@@ -28,6 +29,11 @@ public class ResourceServiceImpl implements ResourceService {
         TopicDTO topic = forumClient.getTopicById(resource.getTopicId());
 
         resource.setCreatedAt(LocalDateTime.now());
+        
+        // Generate AI Summary
+        if (resource.getDescription() != null && !resource.getDescription().isEmpty()) {
+            resource.setAiSummary(geminiService.summarize(resource.getDescription()));
+        }
 
         Resource saved = resourceRepository.save(resource);
 
@@ -38,12 +44,18 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public List<ResourceResponseDTO> getAllResources() {
 
-        // 🔥 OPTIMISATION: 1 appel au lieu de N appels
-        List<TopicDTO> topics = forumClient.getAllTopics();
+        List<TopicDTO> topics = null;
+        try {
+            topics = forumClient.getAllTopics();
+        } catch (Exception e) {
+            System.err.println("Failed to fetch topics from Forum service: " + e.getMessage());
+        }
 
-        Map<Long, String> topicMap = topics.stream()
-                .collect(Collectors.toMap(TopicDTO::getId, TopicDTO::getTitle));
+        Map<Long, String> topicMap = (topics != null) ? 
+            topics.stream().collect(Collectors.toMap(TopicDTO::getId, TopicDTO::getTitle)) : 
+            new java.util.HashMap<>();
 
+        // Return all resources as requested
         return resourceRepository.findAll()
                 .stream()
                 .map(r -> mapToDTO(
@@ -89,6 +101,16 @@ public class ResourceServiceImpl implements ResourceService {
     public void deleteResource(Long id) {
         resourceRepository.deleteById(id);
     }
+    
+    // ================= APPROVAL (ADVANCED LOGIC) =================
+    public ResourceResponseDTO updateResourceStatus(Long id, com.example.resource_service.entity.ResourceStatus status) {
+        Resource r = resourceRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Resource not found"));
+        r.setStatus(status);
+        Resource saved = resourceRepository.save(r);
+        String topicName = forumClient.getTopicById(saved.getTopicId()).getTitle();
+        return mapToDTO(saved, topicName);
+    }
 
     // ================= MAPPER =================
     private ResourceResponseDTO mapToDTO(Resource resource, String topicName) {
@@ -98,9 +120,11 @@ public class ResourceServiceImpl implements ResourceService {
                 resource.getTitle(),
                 resource.getDescription(),
                 resource.getUrl(),
-                resource.getType().name(),
+                resource.getType() != null ? resource.getType().name() : "OTHER",
                 resource.getTopicId(),
-                topicName
+                topicName,
+                resource.getAiSummary(),
+                resource.getStatus() != null ? resource.getStatus().name() : "PENDING"
         );
     }
-}
+}

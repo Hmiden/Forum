@@ -37,14 +37,14 @@
         {{ reply.content }}
       </div>
       <div class="d-flex">
-        <!-- ✅ Report button -->
-        <button class="btn btn-outline-warning btn-sm me-2"
+        <!-- ✅ Report button (Red Flag) -->
+        <button class="btn btn-outline-danger btn-sm me-2"
                 (click)="openReportModal(reply.id!)"
                 title="Report this reply">
-          <i class="fas fa-flag"></i> Report
+          🚩 Report
         </button>
-        <button class="btn btn-warning btn-sm me-2" (click)="editReply(reply)">Edit</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteReply(reply.id!)">Delete</button>
+        <button *ngIf="authService.isAdmin()" class="btn btn-warning btn-sm me-2" (click)="editReply(reply)">Edit</button>
+        <button *ngIf="authService.isAdmin()" class="btn btn-danger btn-sm" (click)="deleteReply(reply.id!)">Delete</button>
       </div>
     </li>
 

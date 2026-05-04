@@ -24,6 +24,8 @@ public class Topic {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    private String authorEmail;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 
     @ManyToOne

@@ -5,6 +5,7 @@ import { Reply } from 'src/app/models/reply';
 import { ReplyDto } from 'src/app/models/reply-dto';
 import { ReplyService } from 'src/app/services/reply.service';
 import { ReportService } from 'src/app/services/report.service';
+import { AuthService } from 'src/app/services/auth.service';
 declare var bootstrap: any;
 
 @Component({
@@ -31,7 +32,8 @@ export class ReplyListComponent implements OnInit {
     private replyService: ReplyService,
     private reportService: ReportService,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    public authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -106,7 +108,11 @@ export class ReplyListComponent implements OnInit {
             modal?.hide();
           }, 1500);
         },
-        error: () => alert('Error submitting report.')
+        error: (err) => {
+          console.error('Report error:', err);
+          const msg = err.error?.message || err.error || 'Error submitting report.';
+          alert(msg);
+        }
       });
     }
   }

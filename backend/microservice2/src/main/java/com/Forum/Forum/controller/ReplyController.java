@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/reply")
-@CrossOrigin("*")
 public class ReplyController {
 
     private IServiceReply replyService;

@@ -13,7 +13,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/topic")
-@CrossOrigin("*")
 public class TopicController {
     private IServiceTopic serviceTopic;
     @PostMapping("/category/{categoryId}")
@@ -55,4 +54,23 @@ public class TopicController {
         return serviceTopic.getAllDTO();
     }
 
+    // ========== ADVANCED ENDPOINTS ==========
+
+    /**
+     * GET /topic/trending?days=7
+     * Returns topics sorted by reply count, from the last N days.
+     */
+    @GetMapping("/trending")
+    public List<Topic> getTrending(@RequestParam(defaultValue = "7") int days) {
+        return serviceTopic.getTrendingTopics(days);
+    }
+
+    /**
+     * GET /topic/search?title=spring
+     * Returns topics matching the given title (case-insensitive).
+     */
+    @GetMapping("/search")
+    public List<Topic> search(@RequestParam String title) {
+        return serviceTopic.searchByTitle(title);
+    }
 }

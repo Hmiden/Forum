@@ -11,6 +11,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import com.Forum.Forum.Services.BadwordService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +29,9 @@ public class ImplServiceTopicTest {
 
     @Mock
     private ICategoryRepository categoryRepository;
+
+    @Mock
+    private BadwordService badwordService;
 
     @InjectMocks
     private ImplServiceTopic service;
@@ -50,6 +54,7 @@ public class ImplServiceTopicTest {
 
     @Test
     void testCreate() {
+        when(badwordService.censorText(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
         when(repository.save(any(Topic.class))).thenReturn(topic);
 
@@ -80,6 +85,7 @@ public class ImplServiceTopicTest {
         updateInfo.setTitle("Updated");
         updateInfo.setContent("Content");
 
+        when(badwordService.censorText(anyString())).thenAnswer(invocation -> invocation.getArgument(0));
         when(repository.findById(10L)).thenReturn(Optional.of(topic));
         when(repository.save(any(Topic.class))).thenReturn(topic);
 

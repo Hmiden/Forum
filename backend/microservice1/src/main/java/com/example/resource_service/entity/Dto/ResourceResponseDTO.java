@@ -17,4 +17,6 @@ public class ResourceResponseDTO {
     private String type;
     private Long topicId;
     private String topicName;
+    private String aiSummary;
+    private String status;
 }

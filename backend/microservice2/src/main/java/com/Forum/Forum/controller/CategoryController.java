@@ -10,7 +10,6 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 @RequestMapping("/category")
-@CrossOrigin("*")
 public class CategoryController {
 
     private IServiceCategory serviceCategory;

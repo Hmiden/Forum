@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Route, Router } from '@angular/router';
 import { Category } from 'src/app/models/category';
 import { CategoryService } from 'src/app/services/category.service';
+import { AuthService } from 'src/app/services/auth.service';
 declare var bootstrap: any;
 
 @Component({
@@ -15,7 +16,11 @@ export class CategoryListComponent implements OnInit {
   currentCategory: Category = { name: '', description: '' };
   selectedCategoryId: number | null = null;
 
-  constructor(private categoryService: CategoryService, private router: Router) {}
+  constructor(
+    private categoryService: CategoryService, 
+    private router: Router,
+    public authService: AuthService
+  ) {}
 
   ngOnInit(): void {
     this.loadCategories();

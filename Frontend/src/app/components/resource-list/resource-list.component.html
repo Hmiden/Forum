@@ -113,6 +113,12 @@
         <div class="rl-card-body">
           <div class="rl-card-title">{{ r.title }}</div>
           <div *ngIf="r.description" class="rl-card-desc">{{ r.description }}</div>
+          
+          <!-- ✨ AI Summary -->
+          <div *ngIf="r.aiSummary" class="rl-ai-summary">
+            <span class="rl-ai-label"><i class="fas fa-magic me-1"></i> AI Summary</span>
+            <p class="rl-ai-text">{{ r.aiSummary }}</p>
+          </div>
   
           <div class="rl-card-meta">
             <span class="rl-badge" [ngClass]="'rl-badge-' + r.type.toLowerCase()">{{ r.type }}</span>
@@ -131,8 +137,8 @@
   
         <!-- Actions -->
         <div class="rl-card-actions">
-          <button class="rl-btn-edit" (click)="openEdit(r)">Edit</button>
-          <button class="rl-btn-del"  (click)="delete(r.id)">Delete</button>
+          <button *ngIf="authService.isAdmin()" class="rl-btn-edit" (click)="openEdit(r)">Edit</button>
+          <button *ngIf="authService.isAdmin()" class="rl-btn-del"  (click)="delete(r.id)">Delete</button>
         </div>
   
       </div>

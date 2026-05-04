@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Topic } from 'src/app/models/topic';
 import { TopicService } from 'src/app/services/topic.service';
+import { AuthService } from 'src/app/services/auth.service';
 declare var bootstrap: any;
 
 @Component({
@@ -23,7 +24,8 @@ export class TopicListComponent implements OnInit {
   constructor(
     private topicService: TopicService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    public authService: AuthService
   ) {}
 
   ngOnInit() {

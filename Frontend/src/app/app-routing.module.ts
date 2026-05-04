@@ -4,17 +4,19 @@ import { CategoryListComponent } from './components/category/category-list/categ
 import { TopicListComponent } from './components/topic/topic-list/topic-list.component';
 import { ReplyListComponent } from './components/reply/reply-list/reply-list.component';
 import { ResourceListComponent } from './components/resource-list/resource-list.component';
+import { LoginComponent } from './components/auth/login/login.component';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 
 const routes: Routes = [
-   { path: '', redirectTo: '/categories', pathMatch: 'full' },
+  { path: '', redirectTo: '/categories', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
   { path: 'categories', component: CategoryListComponent },
   { path: 'categories/:categoryId/topics', component: TopicListComponent },
   
   { path: 'topics/:topicId/replies', component: ReplyListComponent },
   { path: 'resources', component: ResourceListComponent },
-  { path: '**', redirectTo: '/categories' },
-  
-  
+  { path: 'admin', component: AdminDashboardComponent },
+  { path: '**', redirectTo: '/categories' }
 ];
 
 @NgModule({

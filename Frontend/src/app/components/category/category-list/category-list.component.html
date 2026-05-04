@@ -2,13 +2,13 @@
   <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
     <h2 class="text-primary fw-bold">Categories</h2>
-    <button class="btn btn-primary" (click)="showForm = !showForm">
+    <button *ngIf="authService.isAdmin()" class="btn btn-primary" (click)="showForm = !showForm">
       {{ showForm ? 'Close Form' : 'Add Category' }}
     </button>
   </div>
 
   <!-- Category form -->
-  <app-category-form *ngIf="showForm"
+  <app-category-form *ngIf="showForm && authService.isAdmin()"
     [category]="currentCategory"
     [title]="currentCategory.id ? 'Edit Category' : 'Add Category'"
     (save)="handleSave($event)"
@@ -33,9 +33,9 @@
       </div>
 
       <div class="d-flex">
-        <button class="btn btn-success btn-sm me-2" (click)="addTopic(category)">Add Topic</button>
-        <button class="btn btn-warning btn-sm me-2" (click)="editCategory(category)">Edit</button>
-        <button class="btn btn-danger btn-sm" (click)="deleteCategory(category.id!)">Delete</button>
+        <button class="btn btn-success btn-sm me-2" (click)="addTopic(category)">View Topic</button>
+        <button *ngIf="authService.isAdmin()" class="btn btn-warning btn-sm me-2" (click)="editCategory(category)">Edit</button>
+        <button *ngIf="authService.isAdmin()" class="btn btn-danger btn-sm" (click)="deleteCategory(category.id!)">Delete</button>
       </div>
     </li>
 

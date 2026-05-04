@@ -1,0 +1,38 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: gateway-service
+  cloud:
+    gateway:
+      routes:
+        - id: forum-service
+          uri: http://localhost:8082
+          predicates:
+            - Path=/topic/**, /category/**, /reply/**, /report/**, /badword/**
+        - id: resource-service
+          uri: http://localhost:8078
+          predicates:
+            - Path=/resources/**
+        - id: auth-service
+          uri: http://localhost:8081
+          predicates:
+            - Path=/auth/**
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - PATCH
+              - OPTIONS
+            allowedHeaders: "*"
+
+# Disable Eureka for local testing
+eureka:
+  client:
+    enabled: false

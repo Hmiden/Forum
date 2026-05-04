@@ -8,7 +8,7 @@ import { ResourceResponse } from '../models/resource-response';
 @Injectable({ providedIn: 'root' })
 export class ResourceService {
 
-  private baseUrl = 'http://localhost:8078/resources';
+  private baseUrl = 'http://localhost:8080/resources';
 
   constructor(private http: HttpClient) {}
 
@@ -30,5 +30,9 @@ export class ResourceService {
 
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
+
+  updateStatus(id: number, status: string): Observable<ResourceResponse> {
+    return this.http.patch<ResourceResponse>(`${this.baseUrl}/${id}/status?status=${status}`, {});
   }
 }

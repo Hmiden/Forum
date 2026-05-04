@@ -5,7 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { JwtInterceptor } from './interceptors/jwt.interceptor';
 import { CategoryListComponent } from './components/category/category-list/category-list.component';
 import { CategoryFormComponent } from './components/category/category-form/category-form.component';
 import { TopicFormComponent } from './components/topic/topic-form/topic-form.component';
@@ -14,6 +15,8 @@ import { ReplyListComponent } from './components/reply/reply-list/reply-list.com
 import { ReplyFormComponent } from './components/reply/reply-form/reply-form.component';
 import { ResourceListComponent } from './components/resource-list/resource-list.component';
 import { SafePipe } from './pipes/safe.pipe';
+import { LoginComponent } from './components/auth/login/login.component';
+import { AdminDashboardComponent } from './components/admin/admin-dashboard/admin-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +28,9 @@ import { SafePipe } from './pipes/safe.pipe';
     ReplyListComponent,
     ReplyFormComponent,
     ResourceListComponent,
-    SafePipe
+    SafePipe,
+    LoginComponent,
+    AdminDashboardComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +39,9 @@ import { SafePipe } from './pipes/safe.pipe';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,0 +1,65 @@
+<div class="auth-container">
+    <div class="auth-card">
+        <h2>{{ isLoginMode ? 'Sign In' : 'Join Fluency' }}</h2>
+
+        <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+        <div *ngIf="successMessage" class="alert alert-success">{{ successMessage }}</div>
+
+        <!-- Login Form -->
+        <form *ngIf="isLoginMode" [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': lf['username'].errors && lf['username'].touched }" placeholder="Enter your username" />
+                <div *ngIf="lf['username'].errors && lf['username'].touched" class="invalid-feedback">
+                    <div *ngIf="lf['username'].errors['required']">Username is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': lf['password'].errors && lf['password'].touched }" placeholder="••••••••" />
+                <div *ngIf="lf['password'].errors && lf['password'].touched" class="invalid-feedback">
+                    <div *ngIf="lf['password'].errors['required']">Password is required</div>
+                </div>
+            </div>
+            <button [disabled]="loading || loginForm.invalid" class="btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Login to Dashboard
+            </button>
+        </form>
+
+        <!-- Register Form -->
+        <form *ngIf="!isLoginMode" [formGroup]="registerForm" (ngSubmit)="onRegisterSubmit()">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': rf['username'].errors && rf['username'].touched }" placeholder="Choose a username" />
+                <div *ngIf="rf['username'].errors && rf['username'].touched" class="invalid-feedback">
+                    <div *ngIf="rf['username'].errors['required']">Username is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': rf['password'].errors && rf['password'].touched }" placeholder="Create a password" />
+                <div *ngIf="rf['password'].errors && rf['password'].touched" class="invalid-feedback">
+                    <div *ngIf="rf['password'].errors['required']">Password is required</div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Account Role</label>
+                <select formControlName="role" class="form-control">
+                    <option value="USER">Standard User</option>
+                    <option value="ADMIN">System Administrator</option>
+                </select>
+            </div>
+            <button [disabled]="loading || registerForm.invalid" class="btn-primary">
+                <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                Create Account
+            </button>
+        </form>
+
+        <div class="toggle-mode">
+            <a href="javascript:void(0)" (click)="toggleMode()">
+                {{ isLoginMode ? "Don't have an account? Sign up" : "Already have an account? Sign in" }}
+            </a>
+        </div>
+    </div>
+</div>

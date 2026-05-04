@@ -10,7 +10,6 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/resources")
-@CrossOrigin(origins = "http://localhost:4200")
 @RequiredArgsConstructor
 public class ResourceController {
 
@@ -42,8 +41,18 @@ public class ResourceController {
 
     // ✅ DELETE
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        resourceService.deleteResource(id);
+    public org.springframework.http.ResponseEntity<?> delete(@PathVariable Long id) {
+        try {
+            resourceService.deleteResource(id);
+            return org.springframework.http.ResponseEntity.ok().build();
+        } catch (Exception e) {
+            return org.springframework.http.ResponseEntity.status(500).body("Delete error: " + e.getMessage());
+        }
     }
 
+    // ✅ UPDATE STATUS (Advanced Business Logic)
+    @PatchMapping("/{id}/status")
+    public ResourceResponseDTO updateStatus(@PathVariable Long id, @RequestParam com.example.resource_service.entity.ResourceStatus status) {
+        return resourceService.updateResourceStatus(id, status);
+    }
 }
